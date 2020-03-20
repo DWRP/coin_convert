@@ -7,6 +7,10 @@ void main () async{
       MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Home(),
+        theme: ThemeData(
+          primaryColor: Colors.blueAccent,
+          hintColor: Colors.blue
+        ),
       )
     );
 }

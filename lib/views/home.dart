@@ -7,6 +7,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  double dolar;  
+  double euro;
+
+  final TextEditingController rControl = TextEditingController();
+  final TextEditingController dControl = TextEditingController();
+  final TextEditingController eControl = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,8 +51,52 @@ class _HomeState extends State<Home> {
                   child: Text("Erro ao carregar dados!!! :("),
                 );
               }else{
-                return Container(
-                  child: Text("Carregou!!!"),
+                dolar = snapshot.data["results"]["currencies"]["USD"]["buy"];
+                euro = snapshot.data["results"]["currencies"]["EUR"]["buy"];
+                print(dolar);
+                print(euro);
+                return SingleChildScrollView(
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Icon(
+                        Icons.monetization_on,
+                        size: 120, 
+                        color: Colors.amber,
+                      ),
+
+                      buildTextF(
+                        "Real",
+                         "R\$",
+                         rControl,
+                         changeCoins,
+                         dolar,
+                         euro,
+                         dControl,
+                         eControl),
+                      Divider(),
+                      buildTextF(
+                        "Dolar", 
+                        "\$",
+                        dControl,
+                        changeCoins,
+                        dolar,
+                        euro,
+                        rControl,
+                        eControl),
+                      Divider(),
+                      buildTextF(
+                        "Euro",
+                         "€",
+                         eControl,
+                         changeCoins,
+                         dolar,
+                         euro,
+                         rControl,
+                         dControl),
+                    ],
+                  ),
                 );
               }
           }
@@ -53,4 +105,25 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+}
+
+
+Widget buildTextF(String label, String prefx, TextEditingController ctr, Function change, double dolar, double euro,TextEditingController ctr1,TextEditingController ctr2){
+  return TextField(
+    controller: ctr,
+    decoration: InputDecoration(
+      labelText: label,
+      labelStyle: TextStyle(
+        fontSize: 25
+      ),
+      border: OutlineInputBorder(),
+      prefixText: prefx
+    ),
+    style: TextStyle(
+      fontSize: 25
+    ),
+    onChanged: (item){
+      change(item,label,dolar,euro, ctr1, ctr2);
+      },
+  );
 }
